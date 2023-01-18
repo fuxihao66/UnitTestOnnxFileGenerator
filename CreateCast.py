@@ -26,7 +26,7 @@ def create_initializer_tensor(
     return initializer_tensor
 
 
-def CreateGatherNet(inputDims, outputDims, indices, gatherAxis, testName, opset) -> None:
+def CreateGatherNet(inputDims, outputDims, targetType, testName, opset) -> None:
 
     # Create a dummy convolutional neural network.
 
@@ -38,39 +38,23 @@ def CreateGatherNet(inputDims, outputDims, indices, gatherAxis, testName, opset)
                                          
     model_output_name = "output1"
     Y = onnx.helper.make_tensor_value_info(model_output_name,
-                                           onnx.TensorProto.FLOAT,
+                                           targetType,
                                            outputDims)
-    # indices = np.array([i % 4 for i in range(6)]).astype(np.int32)
-    gather0_indices_initializer_tensor = create_initializer_tensor(
-        name="GatherIndices0",
-        tensor_array=indices,
-        data_type=onnx.TensorProto.INT32)
-
-    constIndicesName = "Indices"
-    constant0_node = onnx.helper.make_node(
-        name="Constant0",  # Name is optional.
-        op_type="Constant",
-        inputs=[
-            
-        ],
-        outputs=[constIndicesName],
-        value = gather0_indices_initializer_tensor
-    )
-
     
-    gather0_node = onnx.helper.make_node(
-        name="Gather0",  # Name is optional.
-        op_type="Gather",
+    
+    cast0_node = onnx.helper.make_node(
+        name="Cast0",  # Name is optional.
+        op_type="Cast",
         inputs=[
-            model_input_name, constIndicesName
+            model_input_name
         ],
         outputs=[model_output_name],
-        axis = gatherAxis,
+        to = targetType
     )
     # Create the graph (GraphProto)
     graph_def = onnx.helper.make_graph(
-        nodes=[constant0_node, gather0_node],
-        name="GatherTest",
+        nodes=[cast0_node],
+        name="CastTest",
         inputs=[X],  # Graph input
         outputs=[Y],  # Graph output
         initializer=[
@@ -93,9 +77,10 @@ def CreateGatherNet(inputDims, outputDims, indices, gatherAxis, testName, opset)
     onnx.save(fp16_model, "GeneratedOnnx/FP16/{}-fp16-{}.onnx".format(testName, opset))
 
 if __name__ == "__main__":
-    opsetList = [7, 11, 13]
-
+    opsetList = [7, 9, 13]
+    # targetType = onnx.TensorProto.INT32
+    targetType = onnx.TensorProto.UINT32
     for opset in opsetList:
-        CreateGatherNet([4], [6], np.array([i % 4 for i in range(6)]).astype(np.int32), 0, "GatherTest0", opset)
-        CreateGatherNet([3, 2], [2, 2, 2], np.array([[0, 1],[1, 2]]).astype(np.int32), 0, "GatherTest1", opset)
-        CreateGatherNet([3, 3], [1, 3, 2], np.array([[0, 2]]).astype(np.int32), 1, "GatherTest2", opset)
+        CreateGatherNet([4], [4], targetType, "CastTest0", opset)
+        CreateGatherNet([3, 2], [3, 2], targetType, "CastTest1", opset)
+        # CreateGatherNet([3, 3], [1, 3, 2], np.array([[0, 2]]).astype(np.int32), 1, "GatherTest2", opset)

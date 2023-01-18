@@ -1,0 +1,24 @@
+onnx-example:Õ
+?Scales	Constant0"Constant* 
+value*
+*€|B
+ScaleConst 
+A
+input1
+Scalesoutput1	Upsample0"Upsample*
+mode"linear UpsampleTestZ
+input1
+
+
+
+b
+output1
+
+
+
+j
+Scales
+
+
+
+B	

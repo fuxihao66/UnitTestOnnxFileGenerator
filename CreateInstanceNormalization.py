@@ -26,52 +26,45 @@ def create_initializer_tensor(
     return initializer_tensor
 
 
-def CreateGatherNet(inputDims, outputDims, indices, gatherAxis, testName, opset) -> None:
+def CreateINNet(inputDims, outputDims, epsilon, testName, opset) -> None:
 
     # Create a dummy convolutional neural network.
 
     # IO tensors (ValueInfoProto).
-    model_input_name = "input1"
-    X = onnx.helper.make_tensor_value_info(model_input_name,
+    model_input_name0 = "input0"
+    X = onnx.helper.make_tensor_value_info(model_input_name0,
                                            onnx.TensorProto.FLOAT,
                                            inputDims)
-                                         
+    model_input_name1 = "input1"
+    Scale = onnx.helper.make_tensor_value_info(model_input_name1,
+                                           onnx.TensorProto.FLOAT,
+                                           [inputDims[1]])   
+    model_input_name2 = "input2"
+    Bias = onnx.helper.make_tensor_value_info(model_input_name2,
+                                           onnx.TensorProto.FLOAT,
+                                           [inputDims[1]])                                  
     model_output_name = "output1"
     Y = onnx.helper.make_tensor_value_info(model_output_name,
                                            onnx.TensorProto.FLOAT,
                                            outputDims)
-    # indices = np.array([i % 4 for i in range(6)]).astype(np.int32)
-    gather0_indices_initializer_tensor = create_initializer_tensor(
-        name="GatherIndices0",
-        tensor_array=indices,
-        data_type=onnx.TensorProto.INT32)
-
-    constIndicesName = "Indices"
-    constant0_node = onnx.helper.make_node(
-        name="Constant0",  # Name is optional.
-        op_type="Constant",
-        inputs=[
-            
-        ],
-        outputs=[constIndicesName],
-        value = gather0_indices_initializer_tensor
-    )
-
     
-    gather0_node = onnx.helper.make_node(
-        name="Gather0",  # Name is optional.
-        op_type="Gather",
+    
+    in0_node = onnx.helper.make_node(
+        name="InstanceNormalization0",  # Name is optional.
+        op_type="InstanceNormalization",
         inputs=[
-            model_input_name, constIndicesName
+            model_input_name0,
+            model_input_name1,
+            model_input_name2,
         ],
         outputs=[model_output_name],
-        axis = gatherAxis,
+        epsilon = epsilon
     )
     # Create the graph (GraphProto)
     graph_def = onnx.helper.make_graph(
-        nodes=[constant0_node, gather0_node],
-        name="GatherTest",
-        inputs=[X],  # Graph input
+        nodes=[in0_node],
+        name="InstanceNormalizationTest",
+        inputs=[X, Scale, Bias],  # Graph input
         outputs=[Y],  # Graph output
         initializer=[
             # gather0_indices_initializer_tensor
@@ -93,9 +86,9 @@ def CreateGatherNet(inputDims, outputDims, indices, gatherAxis, testName, opset)
     onnx.save(fp16_model, "GeneratedOnnx/FP16/{}-fp16-{}.onnx".format(testName, opset))
 
 if __name__ == "__main__":
-    opsetList = [7, 11, 13]
+    opsetList = [7]
 
     for opset in opsetList:
-        CreateGatherNet([4], [6], np.array([i % 4 for i in range(6)]).astype(np.int32), 0, "GatherTest0", opset)
-        CreateGatherNet([3, 2], [2, 2, 2], np.array([[0, 1],[1, 2]]).astype(np.int32), 0, "GatherTest1", opset)
-        CreateGatherNet([3, 3], [1, 3, 2], np.array([[0, 2]]).astype(np.int32), 1, "GatherTest2", opset)
+        CreateINNet([1,2,2,2], [1,2,2,2],1e-4, "InstanceNormalizationTest0", opset)
+        CreateINNet([1,3,2,2], [1,3,2,2],1e-5, "InstanceNormalizationTest1", opset)
+        # CreateGatherNet([3, 3], [1, 3, 2], np.array([[0, 2]]).astype(np.int32), 1, "GatherTest2", opset)
