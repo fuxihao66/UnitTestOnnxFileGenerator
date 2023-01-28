@@ -1,0 +1,58 @@
+pytorch1.13.1:≤
+ø
+input1
+conv0.weight
+
+conv0.biasoutput1/conv0/Conv"Conv*
+	dilations@@†*
+group†*
+kernel_shape@@†*
+pads@@@@†*
+strides@@†2†C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\nn\modules\conv.py(460): _conv_forward
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\nn\modules\conv.py(463): forward
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\nn\modules\module.py(1182): _slow_forward
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\nn\modules\module.py(1194): _call_impl
+.\CreateConv.py(29): forward
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\nn\modules\module.py(1182): _slow_forward
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\nn\modules\module.py(1194): _call_impl
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\jit\_trace.py(118): wrapper
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\jit\_trace.py(132): forward
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\nn\modules\module.py(1194): _call_impl
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\jit\_trace.py(1184): _get_trace_graph
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\onnx\utils.py(896): _trace_and_get_graph_from_model
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\onnx\utils.py(987): _create_jit_graph
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\onnx\utils.py(1111): _model_to_graph
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\onnx\utils.py(1539): _export
+C:\Users\FU Xihao\AppData\Local\Programs\Python\Python37\lib\site-packages\torch\onnx\utils.py(519): export
+.\CreateConv.py(41): <module>
+	torch_jit*Ω
+Bconv0.weightJ¢Îõ2|*ü¢£úCØã±t,+(æ,—´Aí§≠Å¨ö¨0É´AßcÆ§G$P1÷ß/¨1Ñ-\≠•0œØo∞(ü-1m∞Y¨≥1±’ßì.Ø¨∞±E,º¶#ÉÆú0î0˛®§Ì,”∞ı,X®}(⁄),D∞ﬁ≠π∞/ Ø*n∞Ó1∏∞20ô´‚∞®1i≠m1U±n/61R™û'ˆÆ≤!:*Ë∞*
+B
+conv0.biasJ&2q£7,Z"
+input1
+
+
+
+
+‡
+‡Z&
+conv0.weight
+
+
+
+
+
+Z
+
+conv0.bias
+
+
+
+b#
+output1
+
+
+
+
+‡
+‡B

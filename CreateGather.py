@@ -8,6 +8,45 @@ import torch.nn as nn
 import numpy as np
 import onnx
 
+'''
+
+Test 1:
+data = [
+      [1.0, 1.2],
+      [2.3, 3.4],
+      [4.5, 5.7],
+  ]
+  indices = [
+      [0, 1],
+      [1, 2],
+  ]
+  output = [
+      [
+          [1.0, 1.2],
+          [2.3, 3.4],
+      ],
+      [
+          [2.3, 3.4],
+          [4.5, 5.7],
+      ],
+  ]
+Test 2:
+data = [
+      [1.0, 1.2, 1.9],
+      [2.3, 3.4, 3.9],
+      [4.5, 5.7, 5.9],
+  ]
+  indices = [
+      [0, 2],
+  ]
+  axis = 1,
+  output = [
+        [[1.0, 1.9]],
+        [[2.3, 3.9]],
+        [[4.5, 5.9]],
+    ]
+'''
+
 # reference https://leimao.github.io/blog/ONNX-Python-API/
 
 def create_initializer_tensor(
@@ -98,4 +137,4 @@ if __name__ == "__main__":
     for opset in opsetList:
         CreateGatherNet([4], [6], np.array([i % 4 for i in range(6)]).astype(np.int32), 0, "GatherTest0", opset)
         CreateGatherNet([3, 2], [2, 2, 2], np.array([[0, 1],[1, 2]]).astype(np.int32), 0, "GatherTest1", opset)
-        CreateGatherNet([3, 3], [1, 3, 2], np.array([[0, 2]]).astype(np.int32), 1, "GatherTest2", opset)
+        CreateGatherNet([3, 3], [3, 1, 2], np.array([[0, 2]]).astype(np.int32), 1, "GatherTest2", opset)
