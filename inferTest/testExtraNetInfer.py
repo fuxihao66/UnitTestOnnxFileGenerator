@@ -9,15 +9,17 @@ import time
 # x /= 255.
 # x_linear = np.power((x + 0.055)/1.055, 2.4).astype(np.float32)
 # cv2.imwrite("input_hdr.exr", x_linear)
-x = np.zeros((1, 21, 720, 1280), dtype=np.float16)
+# x = np.zeros((1, 21, 720, 1280), dtype=np.float16)
+x = np.zeros((1, 21, 720, 1280), dtype=np.float32)
 
 sess_options = ort.SessionOptions()
 # sess_options.enable_profiling = True
 # Set graph optimization level
 # sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_EXTENDED
 sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+sess_options.optimized_model_filepath = "D:/optimized_model_fp32.onnx"
 
-ort_sess = ort.InferenceSession('D:/UNetGated_UEIntegrate_fp16.onnx', sess_options, providers=["DmlExecutionProvider" ])#CPUExecutionProvider
+ort_sess = ort.InferenceSession('D:/UNetGated_UEIntegrate.onnx', sess_options, providers=["DmlExecutionProvider" ])#CPUExecutionProvider
 # ort_sess = ort.InferenceSession('D:/UGit/OnnxDMLPlugin/OnnxDMLTest/model/candy-9.onnx', providers=["CPUExecutionProvider" ])#
 # ort_sess = ort.InferenceSession('D:/UGit/OnnxDMLPlugin/OnnxDMLTest/model/candy-9.onnx', providers=["CUDAExecutionProvider" ])#
 start = time.time()
