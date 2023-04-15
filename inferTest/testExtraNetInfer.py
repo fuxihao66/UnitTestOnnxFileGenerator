@@ -17,9 +17,9 @@ sess_options = ort.SessionOptions()
 # Set graph optimization level
 # sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_EXTENDED
 sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
-sess_options.optimized_model_filepath = "D:/optimized_model_fp32.onnx"
+sess_options.optimized_model_filepath = "D:/optimized_model_opset9_fp32.onnx"
 
-ort_sess = ort.InferenceSession('D:/UNetGated_UEIntegrate.onnx', sess_options, providers=["DmlExecutionProvider" ])#CPUExecutionProvider
+ort_sess = ort.InferenceSession('D:/UGit/ExtraNetTRTInference-main/UNetGated_Opset9.onnx', sess_options, providers=["DmlExecutionProvider" ])#CPUExecutionProvider
 # ort_sess = ort.InferenceSession('D:/UGit/OnnxDMLPlugin/OnnxDMLTest/model/candy-9.onnx', providers=["CPUExecutionProvider" ])#
 # ort_sess = ort.InferenceSession('D:/UGit/OnnxDMLPlugin/OnnxDMLTest/model/candy-9.onnx', providers=["CUDAExecutionProvider" ])#
 start = time.time()
